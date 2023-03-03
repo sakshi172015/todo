@@ -1,0 +1,30 @@
+.container {
+    background-color: brown;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+    display: flex;
+}
+.main-container {
+    background-color: wheat ;
+    width: 80%;
+    height: 80%;
+    overflow: scroll;
+}
+h2 {
+    margin: 20px;
+}
+.header-container {
+    display: flex;
+    justify-content: space-between; 
+}
+.create-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: brown;
+    margin: 15px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
