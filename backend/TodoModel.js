@@ -22,6 +22,10 @@ const todoSchema = new Schema({
     date: {
         type: String,
         required: true
+    },
+    status: {
+        type: Boolean,
+        required: false
     }
 })
 
