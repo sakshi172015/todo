@@ -39,7 +39,7 @@ export const addTodo = async(req, res, next) => {
         })
     }
     const todo = new TodoModel({
-        title, link, icon, note, date: Date.now()
+        title, link, icon, note, date: Date.now(), status: false
     })
     try {
         await todo.save()
@@ -55,12 +55,12 @@ export const addTodo = async(req, res, next) => {
     })
 }
 export const updateTodo = async(req, res, next) => {
-    const {title, link, icon, note} = req.body
+    const {title, link, icon, note, status} = req.body
     const todoId = req.params.id
     let todo;
     try {
         todo = await TodoModel.findByIdAndUpdate(todoId, {
-            title, link, icon, note, date: Date.now()
+            title, link, icon, note, date: Date.now(), status
         })
     } catch(err) {
         return res.status(400).json({
@@ -98,6 +98,32 @@ export const deleteTodo = async(req, res, next) => {
     }
     return res.status(200).json({
         message: "Todo deleted",
+        data: todo
+    })
+}
+
+export const updateStatus = async(req, res, next) => {
+    const {status} = req.body
+    const todoId = req.params.id
+    let todo;
+    try {
+        todo = await TodoModel.findByIdAndUpdate(todoId, {
+            status
+        })
+    } catch(err) {
+        return res.status(400).json({
+            message: "Error occurred",
+            data: err
+        })
+    }
+    if(!todo) {
+        return res.status(400).json({
+            message: "Error occurred",
+            data: null
+        })
+    }
+    return res.status(200).json({
+        message: "Todo updated",
         data: todo
     })
 }
