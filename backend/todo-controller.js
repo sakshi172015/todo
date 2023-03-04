@@ -39,7 +39,7 @@ export const addTodo = async(req, res, next) => {
         })
     }
     const todo = new TodoModel({
-        title, link, icon, note, date: Date.now(), status: false
+        title, link, icon, note, date: new Date(), status: false
     })
     try {
         await todo.save()
@@ -60,7 +60,7 @@ export const updateTodo = async(req, res, next) => {
     let todo;
     try {
         todo = await TodoModel.findByIdAndUpdate(todoId, {
-            title, link, icon, note, date: Date.now(), status
+            title, link, icon, note, date: new Date(), status
         })
     } catch(err) {
         return res.status(400).json({
