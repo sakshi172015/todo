@@ -38,6 +38,9 @@ export default function TodoList({todo}) {
             <MdDelete style={{margin: '5px'}} onClick={() => setShowDelete(true)}/>
           </div>
         </div>
+        <div className='todo-subcontainer-2' style={{fontSize: "small", marginTop: "-30px", marginBottom: "-5px"}}>
+            <span>{todo.date.toString().substring(0,25)}</span>
+        </div>
         <div className='todo-subcontainer-2'>
             <span>{todo.note}</span>
         </div>
