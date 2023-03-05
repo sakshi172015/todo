@@ -38,8 +38,17 @@ export const addTodo = async(req, res, next) => {
             data: existingTodo
         })
     }
+    let todos
+    try {
+        todos = await TodoModel.find()
+    } catch(err) {
+        return res.status(400).json({
+            message: "Error occurred",
+            data: err
+        })
+    }
     const todo = new TodoModel({
-        title, link, icon, note, date: new Date(), status: false
+        title, link, icon, note, date: new Date(), status: false, order: todos.length + 1
     })
     try {
         await todo.save()
@@ -126,4 +135,32 @@ export const updateStatus = async(req, res, next) => {
         message: "Todo updated",
         data: todo
     })
+}
+
+export const changeOrder = async(req, res, next) => {
+    const {data} = req.body
+    let todo;
+    for(let i=0;i<data.length;i++) {
+        try {
+            todo = await TodoModel.findByIdAndUpdate(data[i]._id, {
+                title: data[i].title, 
+                link: data[i].link,
+                icon: data[i].icon,
+                note: data[i].note, 
+                date: data[i].date, 
+                status: data[i].status,
+                order: i
+            })
+        } catch(err) {
+            return res.status(400).json({
+                message: "Error occurred",
+                data: err
+            })
+        }
+    }
+    return res.status(200).json({
+        message: "Done",
+        data: "Done"
+    })
+    
 }

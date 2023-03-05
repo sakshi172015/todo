@@ -39,7 +39,7 @@ export default function TodoList({todo}) {
           </div>
         </div>
         <div className='todo-subcontainer-2' style={{fontSize: "small", marginTop: "-30px", marginBottom: "-5px"}}>
-            <span>{todo.date.toString().substring(0,25)}</span>
+            {/* <span>{todo.date.toString().substring(0,25)}</span> */}
         </div>
         <div className='todo-subcontainer-2'>
             <span>{todo.note}</span>

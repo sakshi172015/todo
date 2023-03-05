@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {getAllTodos} from '../requests'
+import {getAllTodos, changeOrder} from '../requests'
 import TodoListItem from './TodoListItem'
 import { Divider } from '@mui/material'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -8,6 +8,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Button from '@mui/material/Button';
 import {makeStyles} from '@mui/styles'
+import ReactDragList from 'react-drag-list';
+import 'react-drag-list/assets/index.less';
 
 const useStyles = makeStyles(theme => ({
     datepicker: {
@@ -25,19 +27,31 @@ const useStyles = makeStyles(theme => ({
 
 export default function TodoList() {
     const [date, setDate] = useState(null)
-    const [data, setData] = useState([])
+    let data = []
     const [todos, setTodos] = useState([])
     const [month, setMonth] = useState(null);
     const [year, setYear] = useState(null);  
+    const classes = useStyles()
     useEffect(() => {
       getData()
-      setTodos([todos])
     }, [])
     
     const getData = async() => {
-        const data = await getAllTodos()
-        setData(data.data)
-        setTodos(data.data)
+        let t = await getAllTodos()
+
+        const temp = t.data.sort(function (a, b) {
+            if (a.order < b.order) {
+              return -1;
+            }
+            if (a.order > b.order) {
+              return 1;
+            }
+            return 0;
+          });
+          console.log(temp)
+
+        data = temp
+        setTodos(temp)
     }
 
     const resetFilter = () => {
@@ -69,7 +83,14 @@ export default function TodoList() {
         const j = data.filter(i => i.date.toString().substring(11,15) === newValue.$y.toString())
         setTodos(j)
     }
-    const classes = useStyles()
+    
+    const onTodoDragged = async() => {
+        resetFilter()
+        const response = changeOrder(data)
+        if(response.status == 200) {
+            getData()
+        }
+    }
     return (
         <div>
             <div className='filters'>
@@ -110,15 +131,21 @@ export default function TodoList() {
                     </DemoContainer>
                 </LocalizationProvider>
             </div>
-            {
-                todos.map((todo, index) => {
-                    return(
-                        <><TodoListItem todo={todo} key={index}/>
-                        <Divider sx={{marginLeft: '5%', marginRight: '5%'}}/>
-                        </>
-                    )
-                })
-            }
+            <ReactDragList 
+                dataSource={todos}
+                row={(todo, index) => (
+                    <div key={index}>
+                        <TodoListItem todo={todo} />
+                        <Divider sx={{marginLeft: '5%', marginRight: '5%'}} />
+                        {index}
+                    </div>
+                )}
+                handles={false}
+                onUpdate={(record, index) => onTodoDragged()}
+                className="simple-drag"
+                rowClassName='simple-drag-row'
+            />
+            
         </div>
   )
 }
