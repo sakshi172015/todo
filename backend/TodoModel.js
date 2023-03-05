@@ -26,6 +26,10 @@ const todoSchema = new Schema({
     status: {
         type: Boolean,
         required: false
+    },
+    order: {
+        type: Number,
+        required: true
     }
 })
 

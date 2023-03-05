@@ -40,3 +40,10 @@ export const changeStatus = async(status, id) => {
     })
     return response
 }
+
+export const changeOrder = async(data) => {
+    const response = await axios.put(BASE_URL + '/changeOrder', {
+        data
+    })
+    return response
+}
