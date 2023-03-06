@@ -14,7 +14,9 @@ export default function TodoList({todo}) {
   const [showEdit, setShowEdit] = useState(false)
   const handleChange = async(e) => {
       const response = await changeStatus(!checked, todo._id)
+      console.log(response)
       if(response.status === 200) {
+        window.location.reload(true);
          setChecked(!checked)
       }
   }
@@ -34,16 +36,23 @@ export default function TodoList({todo}) {
             <h4 style={{textDecoration: checked ? "line-through" : "none"}}>{todo.title}</h4>
             </div>
           <div className='icon-container'>
-            <FiEdit2 style={{margin: '5px'}} onClick={() => setShowEdit(true)}/>
-            <MdDelete style={{margin: '5px'}} onClick={() => setShowDelete(true)}/>
+            <FiEdit2 style={{margin: '5px', cursor: "pointer"}} onClick={() => setShowEdit(true)}/>
+            <MdDelete style={{margin: '5px', cursor: "pointer"}} onClick={() => setShowDelete(true)}/>
           </div>
         </div>
         <div className='todo-subcontainer-2' style={{fontSize: "small", marginTop: "-30px", marginBottom: "-5px"}}>
-            {/* <span>{todo.date.toString().substring(0,25)}</span> */}
+            <span>{todo.date.toString().substring(0,25)}</span>
         </div>
         <div className='todo-subcontainer-2'>
             <span>{todo.note}</span>
         </div>
+        {
+          todo.link ?
+            <div className='todo-subcontainer-2' style={{marginTop: '-15px'}}>
+              <span>{todo.link}</span>
+          </div> 
+          : null
+        }
         {
           showDelete ? 
           <DeleteTodo showDelete={showDelete} setShowDelete={setShowDelete} id={todo._id}/>

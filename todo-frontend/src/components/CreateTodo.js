@@ -18,6 +18,7 @@ export default function EditTodo({showCreate, setShowCreate, }) {
     const handleCreate = async() => {
         const response = await createTodo(title, link, icon, note)
         if(response.status === 200) {
+          window.location.reload(true);
             setMessage(response.data.message)
         } else {
             setMessage("Error occurred")

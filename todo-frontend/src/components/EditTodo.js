@@ -19,6 +19,7 @@ export default function EditTodo({showEdit, setShowEdit, todo}) {
         const response = await editTodo(todo._id, title, link, icon, note, todo.status)
         if(response.status === 200) {
             setMessage(response.data.message)
+            window.location.reload(true);
         } else {
             setMessage("Error occurred")
         }

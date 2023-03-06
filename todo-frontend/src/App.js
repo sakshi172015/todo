@@ -14,7 +14,7 @@ export default function App() {
         <div className='header-container'>
           <h2>Todo List</h2>
           <div className='create-container' onClick={() => setShowCreate(true)}>
-				<IoMdAdd style={{ color: "white", fontSize: "1.5em" }}/>
+				<IoMdAdd style={{ color: "white", fontSize: "1.5em", cursor: "pointer"}}/>
 		  </div>
         </div>
         <TodoList />

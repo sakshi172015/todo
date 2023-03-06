@@ -15,6 +15,7 @@ export default function DeleteTodo({showDelete, setShowDelete, id}) {
     const handleDelete = async() => {
         const response = await deleteTodo(id)
         if(response.status === 200) {
+          window.location.reload(true);
             setMessage(response.data.message)
         } else {
             setMessage("Error occurred")
